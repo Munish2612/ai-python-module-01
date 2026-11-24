@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Module 01 — Introduction to AI & Python | Learning Notes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0f1a;
+      --surface: #13162a;
+      --surface2: #1a1e35;
+      --border: #252a45;
+      --accent: #6c63ff;
+      --accent2: #ff6584;
+      --accent3: #43e97b;
+      --accent4: #f7971e;
+      --text: #e8eaf6;
+      --text-muted: #8892b0;
+      --code-bg: #0a0c1a;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #1a1e35 0%, #0d0f1a 50%, #1a1035 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 40px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(108,99,255,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 50%, rgba(255,101,132,0.08) 0%, transparent 60%);
+    }
+    .hero-badges {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 24px; position: relative;
+    }
+    .badge {
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .badge-module { background: rgba(108,99,255,0.2); border: 1px solid rgba(108,99,255,0.5); color: #a99fff; }
+    .badge-level  { background: rgba(67,233,123,0.15); border: 1px solid rgba(67,233,123,0.4); color: #43e97b; }
+    .badge-date   { background: rgba(247,151,30,0.15); border: 1px solid rgba(247,151,30,0.4); color: #f7c56c; }
+    .badge-python { background: rgba(55,145,210,0.2); border: 1px solid rgba(55,145,210,0.5); color: #79c5f0; }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, #a99fff 50%, #ff6584 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+    .toc h2 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .toc ol {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 8px;
+    }
+    .toc li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .toc li a:hover { background: rgba(108,99,255,0.1); color: var(--text); }
+    .toc-num {
+      width: 24px; height: 24px;
+      background: rgba(108,99,255,0.2);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      margin-bottom: 64px;
+      scroll-margin-top: 24px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .icon-purple { background: rgba(108,99,255,0.2); border: 1px solid rgba(108,99,255,0.3); }
+    .icon-pink   { background: rgba(255,101,132,0.2); border: 1px solid rgba(255,101,132,0.3); }
+    .icon-green  { background: rgba(67,233,123,0.2); border: 1px solid rgba(67,233,123,0.3); }
+    .icon-orange { background: rgba(247,151,30,0.2); border: 1px solid rgba(247,151,30,0.3); }
+    .icon-blue   { background: rgba(55,145,210,0.2); border: 1px solid rgba(55,145,210,0.3); }
+
+    .section-title { font-size: 1.6rem; font-weight: 700; color: var(--text); }
+    .section-num   { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: rgba(108,99,255,0.3); }
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p, .card li { color: var(--text-muted); font-size: 0.95rem; }
+    .card ul { padding-left: 20px; }
+    .card li { margin-bottom: 6px; }
+
+    /* ── GRID ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 700px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ── CALLOUT ── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      margin: 20px 0;
+      border-left: 4px solid;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .callout-body { font-size: 0.93rem; line-height: 1.65; }
+    .callout-body strong { display: block; margin-bottom: 4px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .callout-tip    { background: rgba(67,233,123,0.08);  border-color: #43e97b; }
+    .callout-tip strong   { color: #43e97b; }
+    .callout-note   { background: rgba(108,99,255,0.08); border-color: var(--accent); }
+    .callout-note strong  { color: var(--accent); }
+    .callout-warn   { background: rgba(247,151,30,0.08);  border-color: var(--accent4); }
+    .callout-warn strong  { color: var(--accent4); }
+
+    /* ── CODE ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 16px 0;
+      position: relative;
+    }
+    pre code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #cdd6f4;
+      line-height: 1.8;
+    }
+    .code-label {
+      position: absolute; top: 10px; right: 14px;
+      font-size: 10px; font-weight: 600;
+      color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;
+    }
+    .kw  { color: #cba6f7; } /* keyword */
+    .fn  { color: #89b4fa; } /* function */
+    .st  { color: #a6e3a1; } /* string */
+    .co  { color: #585b70; } /* comment */
+    .nu  { color: #fab387; } /* number */
+    .cm  { color: #f9e2af; } /* class/method */
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: var(--radius); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      background: var(--surface2);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 12px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 12px 18px; color: var(--text-muted); font-size: 0.9rem; border-bottom: 1px solid rgba(37,42,69,0.5); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(108,99,255,0.05); color: var(--text); }
+
+    /* ── DIAGRAM ── */
+    .diagram {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .doll-container {
+      display: flex; justify-content: center; align-items: center;
+      gap: 0;
+    }
+    .doll {
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px 24px;
+      border: 2px solid;
+      position: relative;
+    }
+    .doll-ai  { border-color: rgba(108,99,255,0.6); background: rgba(108,99,255,0.08); min-width: 320px; padding: 20px; }
+    .doll-ml  { border-color: rgba(255,101,132,0.6); background: rgba(255,101,132,0.08); min-width: 240px; }
+    .doll-dl  { border-color: rgba(67,233,123,0.6); background: rgba(67,233,123,0.08); min-width: 160px; }
+    .doll-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+    .doll-desc  { font-size: 0.75rem; color: var(--text-muted); }
+    .doll-ai .doll-label  { color: #a99fff; }
+    .doll-ml .doll-label  { color: #ff9fb2; }
+    .doll-dl .doll-label  { color: #43e97b; }
+
+    /* ── PYTHON TYPES ── */
+    .type-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      margin: 4px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 10px; top: 8px; bottom: 8px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2));
+      border-radius: 2px;
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 20px;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -26px; top: 18px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+    }
+    .tl-year { font-size: 0.75rem; font-weight: 700; color: var(--accent); letter-spacing: 1px; margin-bottom: 2px; }
+    .tl-event { font-size: 0.9rem; color: var(--text); }
+
+    /* ── OBJECTIVES ── */
+    .obj-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+    .obj-item:hover { border-color: rgba(108,99,255,0.3); transform: translateX(4px); }
+    .obj-num {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .obj-text { font-size: 0.95rem; color: var(--text); padding-top: 4px; }
+
+    /* ── GLOSSARY ── */
+    .gloss-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .gloss-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      transition: all 0.2s;
+    }
+    .gloss-item:hover { border-color: rgba(108,99,255,0.3); }
+    .gloss-term { font-family: 'Fira Code', monospace; font-size: 0.9rem; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+    .gloss-def  { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer strong { color: var(--text); }
+
+    /* ── PROGRESS ── */
+    .progress-bar-wrap { background: var(--surface2); border-radius: 999px; height: 6px; margin-top: 6px; }
+    .progress-bar { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badges">
+    <span class="badge badge-module">Module 01</span>
+    <span class="badge badge-level">🟢 Beginner</span>
+    <span class="badge badge-date">📅 14 Nov – 17 Nov 2026</span>
+    <span class="badge badge-python">🐍 Python 3.10+</span>
+  </div>
+  <h1>Introduction to AI &amp; Python</h1>
+  <p>Your complete learning notes for Module 01 — from zero to your first Python AI program.</p>
+</header>
+
+<div class="container">
+
+  <!-- TOC -->
+  <nav class="toc">
+    <h2>📖 Table of Contents</h2>
+    <ol>
+      <li><a href="#objectives"><span class="toc-num">0</span>Key Objectives</a></li>
+      <li><a href="#s1"><span class="toc-num">1</span>What is AI?</a></li>
+      <li><a href="#s2"><span class="toc-num">2</span>AI vs ML vs Deep Learning</a></li>
+      <li><a href="#s3"><span class="toc-num">3</span>Real-World AI Applications</a></li>
+      <li><a href="#s4"><span class="toc-num">4</span>Python Fundamentals</a></li>
+      <li><a href="#s5"><span class="toc-num">5</span>Writing Python Programs</a></li>
+      <li><a href="#glossary"><span class="toc-num">G</span>Glossary</a></li>
+    </ol>
+  </nav>
+
+  <!-- OBJECTIVES -->
+  <section class="section" id="objectives">
+    <div class="section-header">
+      <div class="section-icon icon-purple">🎯</div>
+      <div>
+        <div class="section-num">Module Goals</div>
+        <div class="section-title">Key Objectives</div>
+      </div>
+    </div>
+    <div class="obj-item"><div class="obj-num">1</div><div class="obj-text">Learn the basics of Artificial Intelligence and Machine Learning.</div></div>
+    <div class="obj-item"><div class="obj-num">2</div><div class="obj-text">Understand the difference between AI, ML, and Deep Learning.</div></div>
+    <div class="obj-item"><div class="obj-num">3</div><div class="obj-text">Explore real-world AI applications across industries.</div></div>
+    <div class="obj-item"><div class="obj-num">4</div><div class="obj-text">Install Python and practice core concepts — variables, loops, functions, lists.</div></div>
+    <div class="obj-item"><div class="obj-num">5</div><div class="obj-text">Write beginner-friendly Python programs from scratch.</div></div>
+  </section>
+
+  <!-- SECTION 1: WHAT IS AI -->
+  <section class="section" id="s1">
+    <div class="section-header">
+      <div class="section-icon icon-purple">🤖</div>
+      <div>
+        <div class="section-num">Section 1</div>
+        <div class="section-title">What is Artificial Intelligence?</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 Definition</h3>
+      <p><strong style="color:var(--text)">Artificial Intelligence (AI)</strong> is the simulation of human intelligence by machines — especially computers. It enables machines to:</p>
+      <ul style="margin-top:10px">
+        <li>Learn from experience</li>
+        <li>Reason about problems</li>
+        <li>Understand language</li>
+        <li>Perceive images and sounds</li>
+        <li>Make autonomous decisions</li>
+      </ul>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>Key Insight</strong>
+        A calculator is <em>not</em> AI. But a program that learns to recognize cats in photos? That <em>is</em> AI! The difference is <strong>learning from data</strong>.
+      </div>
+    </div>
+
+    <h3 style="color:var(--text); font-size:1rem; margin:24px 0 16px; font-weight:700;">📜 Brief History of AI</h3>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-year">1950</div><div class="tl-event">Alan Turing proposes the "Turing Test" — can a machine fool a human?</div></div>
+      <div class="tl-item"><div class="tl-year">1956</div><div class="tl-event">The term <strong>"Artificial Intelligence"</strong> is coined at the Dartmouth Conference.</div></div>
+      <div class="tl-item"><div class="tl-year">1997</div><div class="tl-event">IBM Deep Blue defeats Chess world champion Garry Kasparov.</div></div>
+      <div class="tl-item"><div class="tl-year">2012</div><div class="tl-event">Deep learning breakthrough — AlexNet dominates ImageNet competition.</div></div>
+      <div class="tl-item"><div class="tl-year">2020</div><div class="tl-event">GPT-3 launches — 175 billion parameter language model by OpenAI.</div></div>
+      <div class="tl-item"><div class="tl-year">2022</div><div class="tl-event">ChatGPT launches and AI goes mainstream — 100M users in 2 months.</div></div>
+    </div>
+
+    <h3 style="color:var(--text); font-size:1rem; margin:24px 0 16px; font-weight:700;">🔑 Types of AI</h3>
+    <div class="grid-3">
+      <div class="card">
+        <h3>🎯 Narrow AI</h3>
+        <p>Designed for <strong style="color:var(--text)">one specific task</strong>. This is what exists today.</p>
+        <p style="margin-top:8px; font-size:0.82rem; color:var(--accent3)">✅ EXISTS TODAY</p>
+        <p style="margin-top:6px; font-size:0.82rem;">Examples: Siri, Chess engines, spam filters</p>
+      </div>
+      <div class="card">
+        <h3>🧪 General AI</h3>
+        <p>Human-level intelligence <strong style="color:var(--text)">across all domains</strong>. Still theoretical.</p>
+        <p style="margin-top:8px; font-size:0.82rem; color:var(--accent4)">🔬 THEORETICAL</p>
+        <p style="margin-top:6px; font-size:0.82rem;">Could cook, code, dance, and debate simultaneously</p>
+      </div>
+      <div class="card">
+        <h3>🚀 Super AI</h3>
+        <p>Surpasses human intelligence in <strong style="color:var(--text)">every way</strong>. Future concept.</p>
+        <p style="margin-top:8px; font-size:0.82rem; color:var(--accent2)">🔮 FUTURE</p>
+        <p style="margin-top:6px; font-size:0.82rem;">The AI from science-fiction movies</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: AI VS ML VS DL -->
+  <section class="section" id="s2">
+    <div class="section-header">
+      <div class="section-icon icon-pink">🪆</div>
+      <div>
+        <div class="section-num">Section 2</div>
+        <div class="section-title">AI vs ML vs Deep Learning</div>
+      </div>
+    </div>
+
+    <!-- Nested doll diagram -->
+    <div class="diagram">
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:20px;letter-spacing:1px;text-transform:uppercase;">The Russian Doll Analogy</p>
+      <div style="display:flex;justify-content:center;align-items:center;position:relative;">
+        <div class="doll doll-ai">
+          <div class="doll-label">Artificial Intelligence</div>
+          <div class="doll-desc">Making machines smart</div>
+          <div style="margin-top:16px;display:flex;justify-content:center;">
+            <div class="doll doll-ml">
+              <div class="doll-label">Machine Learning</div>
+              <div class="doll-desc">Learning from data</div>
+              <div style="margin-top:12px;display:flex;justify-content:center;">
+                <div class="doll doll-dl">
+                  <div class="doll-label">Deep Learning</div>
+                  <div class="doll-desc">Neural networks</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-note">
+      <div class="callout-icon">🧩</div>
+      <div class="callout-body">
+        <strong>Key Rule</strong>
+        Every Deep Learning system is ML. Every ML system is AI. But NOT every AI system uses ML!
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-top:20px;">
+      <div class="card">
+        <h3>🤖 Artificial Intelligence</h3>
+        <p><strong style="color:var(--text)">What:</strong> The broad field of making machines simulate human thinking.</p>
+        <p style="margin-top:8px"><strong style="color:var(--text)">How:</strong> Rules, logic, search, data — any approach.</p>
+        <p style="margin-top:8px"><strong style="color:var(--text)">Example:</strong> A chess program using search + rules.</p>
+      </div>
+      <div class="card">
+        <h3>📈 Machine Learning</h3>
+        <p><strong style="color:var(--text)">What:</strong> AI that learns patterns from <em>data</em>, without explicit rules.</p>
+        <p style="margin-top:8px"><strong style="color:var(--text)">How:</strong> Feed data → algorithm finds patterns → makes predictions.</p>
+        <p style="margin-top:8px"><strong style="color:var(--text)">Example:</strong> Email spam filter trained on 10,000 emails.</p>
+      </div>
+      <div class="card">
+        <h3>🧠 Deep Learning</h3>
+        <p><strong style="color:var(--text)">What:</strong> ML using layers of artificial neurons (neural networks).</p>
+        <p style="margin-top:8px"><strong style="color:var(--text)">How:</strong> Data flows through many layers, each learning features.</p>
+        <p style="margin-top:8px"><strong style="color:var(--text)">Example:</strong> ChatGPT, DALL-E, Tesla Autopilot.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h3>🔄 Traditional Programming vs Machine Learning</h3>
+      <div class="grid-2" style="margin-top:12px;gap:16px;">
+        <div style="background:var(--code-bg);border-radius:10px;padding:16px;">
+          <p style="font-size:0.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent4);margin-bottom:10px;">Old Way: Traditional Programming</p>
+          <p style="font-size:0.9rem;color:var(--text);">Data + <strong style="color:var(--accent4)">Rules you write</strong> → Answers</p>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;">You manually write: IF email contains "FREE MONEY" → SPAM</p>
+        </div>
+        <div style="background:var(--code-bg);border-radius:10px;padding:16px;">
+          <p style="font-size:0.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent3);margin-bottom:10px;">New Way: Machine Learning</p>
+          <p style="font-size:0.9rem;color:var(--text);">Data + Answers → <strong style="color:var(--accent3)">Rules discovered automatically</strong></p>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;">Show 10,000 labelled emails → AI figures out the rules!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:20px;">
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>AI</th><th>Machine Learning</th><th>Deep Learning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Needs data?</td><td>Sometimes</td><td>Yes</td><td>Lots of data</td></tr>
+          <tr><td>Learns automatically?</td><td>Sometimes</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>Human rules needed?</td><td>Often</td><td>Rarely</td><td>Almost never</td></tr>
+          <tr><td>Compute power?</td><td>Low–Medium</td><td>Medium</td><td>Very High</td></tr>
+          <tr><td>Example</td><td>Chess bot</td><td>Spam filter</td><td>ChatGPT</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 3: REAL WORLD AI -->
+  <section class="section" id="s3">
+    <div class="section-header">
+      <div class="section-icon icon-green">🌍</div>
+      <div>
+        <div class="section-num">Section 3</div>
+        <div class="section-title">Real-World AI Applications</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🏥 Healthcare</h3>
+        <ul>
+          <li>Cancer detection from X-rays (94.5% accuracy)</li>
+          <li>Drug discovery — AlphaFold solved protein folding</li>
+          <li>AI-guided robotic surgery (Da Vinci)</li>
+          <li>Mental health chatbots (Woebot)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🚗 Transportation</h3>
+        <ul>
+          <li>Self-driving cars — Waymo (20M+ miles)</li>
+          <li>Google Maps saves 1.2B hours annually</li>
+          <li>Flight autopilot (~95% of flight time)</li>
+          <li>Amazon Prime Air delivery drones</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>💬 Communication</h3>
+        <ul>
+          <li>Google Translate — 100B translations/day</li>
+          <li>Gmail blocks 100M spam emails daily</li>
+          <li>8+ billion voice assistant devices worldwide</li>
+          <li>Real-time meeting subtitles (Teams, Zoom)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🎬 Entertainment</h3>
+        <ul>
+          <li>Netflix saves $1B/year with AI recommendations</li>
+          <li>AI-generated art (DALL-E, Midjourney)</li>
+          <li>Chess AI (Stockfish) is 300+ Elo above humans</li>
+          <li>Disney's AI de-aging tech in Marvel films</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>💰 Finance</h3>
+        <ul>
+          <li>Visa reviews 500 data points per transaction in &lt;1s</li>
+          <li>60–70% of stock trades made by AI algorithms</li>
+          <li>Upstart approves 27% more loans with less risk</li>
+          <li>Bank of America's Erica: 1.5B client interactions</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🇮🇳 AI in India</h3>
+        <ul>
+          <li>AgroStar — crop disease detection from photos</li>
+          <li>NPCI — UPI fraud prevention in real-time</li>
+          <li>Indian Railways — delay prediction & scheduling</li>
+          <li>Bhashini — AI translation for 22 Indian languages</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: PYTHON -->
+  <section class="section" id="s4">
+    <div class="section-header">
+      <div class="section-icon icon-orange">🐍</div>
+      <div>
+        <div class="section-num">Section 4</div>
+        <div class="section-title">Python Fundamentals</div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon">🐍</div>
+      <div class="callout-body">
+        <strong>Why Python for AI?</strong>
+        Python is the #1 AI language because of its simple English-like syntax, massive ecosystem (NumPy, Pandas, TensorFlow, PyTorch), and huge community. It's used by Google, Tesla, Netflix, and NASA.
+      </div>
+    </div>
+
+    <!-- Variables -->
+    <h3 style="color:var(--text);font-size:1.1rem;margin:28px 0 16px;font-weight:700;">📦 1. Variables</h3>
+    <p style="color:var(--text-muted);margin-bottom:16px;">Variables are <strong style="color:var(--text)">named containers for storing data</strong>. Python has 4 basic data types:</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+      <span class="type-pill"><span class="dot" style="background:#a99fff"></span><span style="color:#a99fff">str</span> &nbsp;"Hello AI"</span>
+      <span class="type-pill"><span class="dot" style="background:#fab387"></span><span style="color:#fab387">int</span> &nbsp;42</span>
+      <span class="type-pill"><span class="dot" style="background:#89b4fa"></span><span style="color:#89b4fa">float</span> &nbsp;3.14</span>
+      <span class="type-pill"><span class="dot" style="background:#a6e3a1"></span><span style="color:#a6e3a1">bool</span> &nbsp;True / False</span>
+    </div>
+    <pre><code><span class="co"># Creating variables</span>
+<span class="cm">student_name</span> = <span class="st">"Alice"</span>           <span class="co"># str  → text</span>
+<span class="cm">age</span>          = <span class="nu">20</span>               <span class="co"># int  → whole number</span>
+<span class="cm">gpa</span>          = <span class="nu">3.8</span>              <span class="co"># float → decimal</span>
+<span class="cm">is_enrolled</span>  = <span class="kw">True</span>             <span class="co"># bool → yes/no</span>
+
+<span class="co"># f-strings — smart text formatting</span>
+<span class="fn">print</span>(<span class="st">f"Hello, {student_name}! Age: {age}"</span>)
+<span class="co"># Output: Hello, Alice! Age: 20</span>
+<span class="code-label">Python</span></code></pre>
+
+    <!-- Loops -->
+    <h3 style="color:var(--text);font-size:1.1rem;margin:28px 0 16px;font-weight:700;">🔁 2. Loops</h3>
+    <p style="color:var(--text-muted);margin-bottom:16px;">Loops let you <strong style="color:var(--text)">repeat code</strong> without writing it multiple times.</p>
+    <pre><code><span class="co"># for loop — repeat a known number of times</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">5</span>):
+    <span class="fn">print</span>(<span class="st">f"Step {i}"</span>)
+<span class="co"># Output: Step 0, Step 1, Step 2, Step 3, Step 4</span>
+
+<span class="co"># Loop through a list</span>
+<span class="cm">subjects</span> = [<span class="st">"Math"</span>, <span class="st">"AI"</span>, <span class="st">"Python"</span>]
+<span class="kw">for</span> subject <span class="kw">in</span> subjects:
+    <span class="fn">print</span>(subject)
+
+<span class="co"># while loop — repeat while condition is true</span>
+<span class="cm">count</span> = <span class="nu">0</span>
+<span class="kw">while</span> count < <span class="nu">3</span>:
+    <span class="fn">print</span>(<span class="st">"Learning AI!"</span>)
+    count = count + <span class="nu">1</span>
+<span class="code-label">Python</span></code></pre>
+
+    <!-- Functions -->
+    <h3 style="color:var(--text);font-size:1.1rem;margin:28px 0 16px;font-weight:700;">🛠️ 3. Functions</h3>
+    <p style="color:var(--text-muted);margin-bottom:16px;">Functions are <strong style="color:var(--text)">reusable blocks of code</strong>. Write once, use many times! (DRY = Don't Repeat Yourself)</p>
+    <pre><code><span class="co"># Define a function</span>
+<span class="kw">def</span> <span class="fn">greet</span>(name):
+    message = <span class="st">f"Hello, {name}! Welcome to AI class."</span>
+    <span class="kw">return</span> message
+
+<span class="co"># Call the function</span>
+result = <span class="fn">greet</span>(<span class="st">"Alice"</span>)
+<span class="fn">print</span>(result)   <span class="co"># Hello, Alice! Welcome to AI class.</span>
+
+<span class="co"># A more complex function</span>
+<span class="kw">def</span> <span class="fn">classify_temperature</span>(temp):
+    <span class="kw">if</span> temp < <span class="nu">0</span>:   <span class="kw">return</span> <span class="st">"Freezing"</span>
+    <span class="kw">elif</span> temp < <span class="nu">25</span>: <span class="kw">return</span> <span class="st">"Comfortable"</span>
+    <span class="kw">else</span>:           <span class="kw">return</span> <span class="st">"Hot"</span>
+<span class="code-label">Python</span></code></pre>
+
+    <!-- Lists -->
+    <h3 style="color:var(--text);font-size:1.1rem;margin:28px 0 16px;font-weight:700;">📋 4. Lists</h3>
+    <p style="color:var(--text-muted);margin-bottom:16px;">Lists store <strong style="color:var(--text)">multiple items</strong> in one variable. Items are ordered, changeable, and indexed from 0.</p>
+    <pre><code><span class="co"># Creating a list</span>
+<span class="cm">ai_tools</span> = [<span class="st">"ChatGPT"</span>, <span class="st">"DALL-E"</span>, <span class="st">"Gemini"</span>, <span class="st">"Copilot"</span>]
+
+<span class="co"># Indexing (starts at 0!)</span>
+<span class="fn">print</span>(ai_tools[<span class="nu">0</span>])   <span class="co"># ChatGPT   (first)</span>
+<span class="fn">print</span>(ai_tools[-<span class="nu">1</span>])  <span class="co"># Copilot   (last)</span>
+<span class="fn">print</span>(ai_tools[<span class="nu">1</span>:<span class="nu">3</span>]) <span class="co"># ['DALL-E', 'Gemini'] (slice)</span>
+
+<span class="co"># Common operations</span>
+ai_tools.<span class="fn">append</span>(<span class="st">"Claude"</span>)    <span class="co"># Add to end</span>
+ai_tools.<span class="fn">remove</span>(<span class="st">"DALL-E"</span>)   <span class="co"># Remove item</span>
+<span class="fn">print</span>(<span class="fn">len</span>(ai_tools))          <span class="co"># Number of items</span>
+<span class="fn">print</span>(<span class="fn">sorted</span>(ai_tools))       <span class="co"># Alphabetical order</span>
+
+<span class="co"># Looping through a list</span>
+<span class="kw">for</span> tool <span class="kw">in</span> ai_tools:
+    <span class="fn">print</span>(<span class="st">f"Tool: {tool}"</span>)
+<span class="code-label">Python</span></code></pre>
+  </section>
+
+  <!-- SECTION 5: PROGRAMS -->
+  <section class="section" id="s5">
+    <div class="section-header">
+      <div class="section-icon icon-blue">💻</div>
+      <div>
+        <div class="section-num">Section 5</div>
+        <div class="section-title">Writing Your First Python Programs</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3>Program 1 — Hello, AI World!</h3>
+      <pre style="margin-top:12px"><code><span class="fn">print</span>(<span class="st">"Hello, AI World!"</span>)
+<span class="fn">print</span>(<span class="st">"I am learning Artificial Intelligence with Python."</span>)
+<span class="code-label">Python</span></code></pre>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3>Program 2 — AI Fact Generator</h3>
+      <pre style="margin-top:12px"><code><span class="kw">import</span> random
+
+ai_facts = [
+    <span class="st">"AI was first coined as a term in 1956."</span>,
+    <span class="st">"Netflix saves $1 billion per year using AI."</span>,
+    <span class="st">"ChatGPT reached 100M users in just 2 months!"</span>
+]
+
+<span class="fn">print</span>(<span class="st">"AI Fact of the Day:"</span>)
+<span class="fn">print</span>(random.<span class="fn">choice</span>(ai_facts))
+<span class="code-label">Python</span></code></pre>
+    </div>
+
+    <div class="card">
+      <h3>Program 3 — Simple AI Decision Tree</h3>
+      <pre style="margin-top:12px"><code><span class="kw">def</span> <span class="fn">classify_animal</span>(has_wings, lives_in_water):
+    <span class="kw">if</span> has_wings <span class="kw">and not</span> lives_in_water:
+        <span class="kw">return</span> <span class="st">"Bird"</span>
+    <span class="kw">elif</span> lives_in_water <span class="kw">and not</span> has_wings:
+        <span class="kw">return</span> <span class="st">"Fish"</span>
+    <span class="kw">elif</span> has_wings <span class="kw">and</span> lives_in_water:
+        <span class="kw">return</span> <span class="st">"Duck"</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="st">"Land animal"</span>
+
+<span class="co"># This is how early AI worked — decision trees!</span>
+<span class="fn">print</span>(<span class="fn">classify_animal</span>(<span class="kw">True</span>,  <span class="kw">False</span>))  <span class="co"># Bird</span>
+<span class="fn">print</span>(<span class="fn">classify_animal</span>(<span class="kw">False</span>, <span class="kw">True</span>))   <span class="co"># Fish</span>
+<span class="code-label">Python</span></code></pre>
+    </div>
+
+    <div class="callout callout-warn" style="margin-top:20px;">
+      <div class="callout-icon">🚀</div>
+      <div class="callout-body">
+        <strong>Mini Project</strong>
+        Run <code style="font-family:'Fira Code',monospace;font-size:0.85rem;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;">python projects/mini_ai_chatbot.py</code> to try your first complete AI project — a rule-based chatbot with a built-in quiz!
+      </div>
+    </div>
+  </section>
+
+  <!-- KEY TAKEAWAYS -->
+  <section class="section">
+    <div class="card" style="border-color:rgba(108,99,255,0.3);background:linear-gradient(135deg,rgba(108,99,255,0.08),rgba(255,101,132,0.05));">
+      <h3 style="font-size:1.1rem;">✅ Key Takeaways</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
+        <div style="display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent3);font-size:1.1rem;">✓</span><span style="color:var(--text);font-size:0.9rem;"><strong>AI</strong> is the broad concept of making machines smart</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent3);font-size:1.1rem;">✓</span><span style="color:var(--text);font-size:0.9rem;"><strong>ML</strong> is a type of AI where machines learn from data</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent3);font-size:1.1rem;">✓</span><span style="color:var(--text);font-size:0.9rem;"><strong>Deep Learning</strong> uses neural networks, powers modern AI</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent3);font-size:1.1rem;">✓</span><span style="color:var(--text);font-size:0.9rem;">AI is already in your daily life — phones, apps, healthcare</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent3);font-size:1.1rem;">✓</span><span style="color:var(--text);font-size:0.9rem;"><strong>Python</strong> is the best language to start your AI journey</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent3);font-size:1.1rem;">✓</span><span style="color:var(--text);font-size:0.9rem;">Core Python: <strong>variables, loops, functions, lists</strong></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section class="section" id="glossary">
+    <div class="section-header">
+      <div class="section-icon icon-purple">📖</div>
+      <div>
+        <div class="section-num">Reference</div>
+        <div class="section-title">Glossary</div>
+      </div>
+    </div>
+    <div class="gloss-grid">
+      <div class="gloss-item"><div class="gloss-term">Artificial Intelligence (AI)</div><div class="gloss-def">Machines simulating human intelligence — learning, reasoning, perceiving.</div></div>
+      <div class="gloss-item"><div class="gloss-term">Machine Learning (ML)</div><div class="gloss-def">AI that learns patterns from data without being explicitly programmed.</div></div>
+      <div class="gloss-item"><div class="gloss-term">Deep Learning (DL)</div><div class="gloss-def">ML using deep neural networks with many layers of artificial neurons.</div></div>
+      <div class="gloss-item"><div class="gloss-term">Neural Network</div><div class="gloss-def">A connected system of nodes inspired by the structure of the human brain.</div></div>
+      <div class="gloss-item"><div class="gloss-term">Training Data</div><div class="gloss-def">The labelled dataset used to teach a machine learning model.</div></div>
+      <div class="gloss-item"><div class="gloss-term">Model</div><div class="gloss-def">The result of training — a learned program that can make predictions.</div></div>
+      <div class="gloss-item"><div class="gloss-term">Algorithm</div><div class="gloss-def">A step-by-step set of instructions used to solve a problem.</div></div>
+      <div class="gloss-item"><div class="gloss-term">Variable</div><div class="gloss-def">A named container that stores a value in a Python program.</div></div>
+      <div class="gloss-item"><div class="gloss-term">Function</div><div class="gloss-def">A reusable block of code defined with <code>def</code> that performs a specific task.</div></div>
+      <div class="gloss-item"><div class="gloss-term">Loop</div><div class="gloss-def">A control structure that repeats a block of code multiple times.</div></div>
+      <div class="gloss-item"><div class="gloss-term">List</div><div class="gloss-def">An ordered, mutable collection of items stored in a single variable.</div></div>
+      <div class="gloss-item"><div class="gloss-term">Narrow AI</div><div class="gloss-def">AI designed for one specific task — the only type that exists today.</div></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p><strong>Module 01 — Introduction to AI &amp; Python</strong> &nbsp;|&nbsp; 14 Nov – 17 Nov 2026 &nbsp;|&nbsp; Level: Beginner</p>
+  <p style="margin-top:8px;">Repository: <a href="https://github.com/Munish2612/ai-python-module-01" target="_blank">github.com/Munish2612/ai-python-module-01</a></p>
+  <p style="margin-top:8px; color: #3d4466; font-size:0.8rem;">📌 These notes are part of Module 01. Keep them for reference throughout the course.</p>
+</footer>
+
+</body>
+</html>
